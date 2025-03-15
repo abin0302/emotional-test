@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>정서 및 행동 장애 자가 진단</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; padding: 20px; }
+        .question { margin-bottom: 15px; }
+        .result { margin-top: 20px; font-weight: bold; white-space: pre-line; }
+    </style>
+</head>
+<body>
+    <h2>정서 및 행동 장애 자가 진단</h2>
+    <p>각 문항을 읽고 자신의 상태에 가장 적합한 점수를 선택하세요.</p>
+    <form id="testForm">
+        <div id="questions"></div>
+        <button type="button" onclick="calculateScore()">결과 확인</button>
+    </form>
+    <div class="result" id="result"></div>
+
+    <script>
+        const questions = [
+            "사소한 일에도 쉽게 걱정한다.",
+            "이유 없이 불안한 기분이 자주 든다.",
+            "사람들과 함께 있을 때 긴장하거나 불편함을 느낀다.",
+            "미래에 대한 걱정 때문에 잠을 설치는 일이 많다.",
+            "항상 최악의 상황을 떠올린다.",
+            "예상치 못한 상황에서 극도로 불안해진다.",
+            "타인의 시선이나 평가에 민감하게 반응한다.",
+            "스트레스가 많을 때 신체적 증상(두통, 복통, 어지러움 등)이 나타난다.",
+            "사람들과 대화하는 것이 부담스럽거나 피하고 싶어진다.",
+            "자주 이유 없이 우울하거나 슬프다.",
+            "갑자기 감정이 변하고 이유 없이 화가 난다.",
+            "무기력함을 자주 느끼고 아무것도 하기 싫어진다.",
+            "잠을 자도 피로가 풀리지 않는다고 느낀다.",
+            "죽음이나 자해에 대해 생각한 적이 있다.",
+            "자신이 가치 없다고 느껴지는 경우가 많다.",
+            "타인의 관심이나 도움을 받기 어려울 것 같다고 생각한다.",
+            "화를 내고 나서 후회하는 일이 많다.",
+            "스트레스를 받을 때 물건을 던지거나 부순 적이 있다.",
+            "사소한 일에도 짜증이 쉽게 난다.",
+            "감정을 조절하는 것이 어렵다고 느낀다.",
+            "주어진 일을 마무리하지 못하고 쉽게 포기하는 편이다.",
+            "한 가지 일에 집중하기 어렵다.",
+            "주의가 산만하여 실수가 잦다.",
+            "충동적으로 행동하고 후회하는 일이 많다.",
+            "즉흥적인 결정을 내리고 계획 없이 행동하는 경향이 있다.",
+            "규칙을 어기는 것이 어렵지 않다.",
+            "거짓말을 하거나 속이는 일이 있다.",
+            "다른 사람을 의도적으로 괴롭힌 적이 있다.",
+            "공감 능력이 부족하다고 느낀 적이 있다.",
+            "자신의 감정을 조절하는 것이 어렵다고 느낀다.",
+            "감정의 기복이 심하다.",
+            "예측할 수 없는 행동을 자주 한다.",
+            "충동적으로 돈을 쓰거나 후회할 행동을 한 적이 있다.",
+            "사회적 상황에서 부적절한 행동을 한 적이 있다.",
+            "관계에서 갈등이 많고 사람들과 자주 충돌한다.",
+            "혼자 있는 것이 더 편하고 타인을 피하고 싶어진다.",
+            "일상적인 생활을 유지하는 것이 어렵다고 느낀다.",
+            "타인의 기분을 이해하는 것이 어렵다고 생각한다.",
+            "자주 불법적인 행동을 고려하거나 실행한 적이 있다."
+        ];
+
+        const questionsContainer = document.getElementById("questions");
+
+        questions.forEach((q, index) => {
+            const div = document.createElement("div");
+            div.classList.add("question");
+            div.innerHTML = `<label>${index + 1}. ${q}</label><br>
+                <select id="q${index}">
+                    <option value="1">1 - 전혀 그렇지 않다</option>
+                    <option value="2">2 - 거의 그렇지 않다</option>
+                    <option value="3">3 - 가끔 그렇다</option>
+                    <option value="4">4 - 자주 그렇다</option>
+                    <option value="5">5 - 매우 그렇다</option>
+                </select>`;
+            questionsContainer.appendChild(div);
+        });
+
+        function calculateScore() {
+            let totalScore = 0;
+            for (let i = 0; i < questions.length; i++) {
+                totalScore += parseInt(document.getElementById(`q${i}`).value);
+            }
+
+            let resultText = "";
+            if (totalScore <= 80) {
+                resultText = "정서 및 행동 문제가 거의 없음\n일상생활에서 특별한 어려움 없이 잘 적응하고 있습니다.";
+            } else if (totalScore <= 130) {
+                resultText = "경미한 문제 가능성 있음\n일부 상황에서 불안, 우울, 충동성이 나타날 수 있습니다. 지속적인 스트레스 관리가 필요할 수 있습니다.";
+            } else if (totalScore <= 180) {
+                resultText = "중등도 문제 가능성 있음\n정서 및 행동 조절이 어려운 경우가 종종 있으며, 스트레스와 감정 기복이 일상생활에 영향을 미칠 수 있습니다. 전문가 상담을 고려해 보세요.";
+            } else {
+                resultText = "심각한 문제 가능성 있음\n감정 조절, 충동성, 대인 관계에서 심각한 어려움이 있을 수 있으며, 전문가의 도움이 필요할 수 있습니다. 심리 상담이나 치료를 적극 고려해보세요.";
+            }
+
+            document.getElementById("result").innerText = `총점: ${totalScore}\n결과: ${resultText}`;
+        }
+    </script>
+</body>
+</html>
